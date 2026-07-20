@@ -58,17 +58,32 @@ model Transactions {
   amount Float
   currency String @db.VarChar(10)
   
-  reference String? @db.VarChar(255) @unique
+  reference String @db.VarChar(255) @unique
   idempotency_key String @db.VarChar(255) @unique
   
   gateway String @db.VarChar(255)
-  gatewayTransactionId String?
+  gateway_transaction_id String?
+  gateway_charge_id String?
+  gateway_customer_id String?
+  gateway_payment_method String?
 
   status TransactionStatus
   type TransactionType
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  transaction Transaction_status_history[]
+}
+
+model Transaction_status_history {
+  id String @default(uuid()) @unique
+  transaction_id String @db.VarChar(255)
+  transaction Transactions @relation(fields: [transaction_id], references: [id])
+  old_status TransactionStatus
+  new_status TransactionStatus
+  source String @db.VarChar(255)
+  reason String? @db.VarChar(255)
+  changed_at DateTime @default(now())
 }
 
 enum TransactionStatus {

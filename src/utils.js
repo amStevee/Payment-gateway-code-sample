@@ -42,4 +42,29 @@ function generateIdempotencyKey() {
   return crypto.randomUUID();
 }
 
-export { errorMiddleware, CustomError, validateRequestBody, generateIdempotencyKey };
+function generateTransactionReference() {
+  const date = new Date();
+
+  const yyy = date.getFullYear();
+
+  const mm = String(date.getMonrh() + 1).padStart(2, "0");
+
+  const dd = String(date.getDate()).padStart(2, "0");
+
+  const random = crypto
+    .randomBytes(4)
+    .toString("base64")
+    .replace(/[^A-Z0-9]/gi, "")
+    .substring(0, 6)
+    .toUpperCase();
+
+  return `TNX-${yyy}${mm}${dd}-${random}`;
+}
+
+export {
+  errorMiddleware,
+  CustomError,
+  validateRequestBody,
+  generateIdempotencyKey,
+  generateTransactionReference,
+};

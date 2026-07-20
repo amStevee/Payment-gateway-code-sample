@@ -1,0 +1,22 @@
+name: CI Pipeline
+
+# Controls when the workflow will run
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+# A workflow run is made up of one or more jobs
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo "Hello World! Your workflow initialized successfully."
